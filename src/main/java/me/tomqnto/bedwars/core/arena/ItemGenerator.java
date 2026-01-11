@@ -1,22 +1,34 @@
-package me.tomqnto.bedwars.core.arena.generators;
+package me.tomqnto.bedwars.core.arena;
 
+import com.sun.istack.internal.Nullable;
 import me.tomqnto.bedwars.api.arena.Arena;
 import me.tomqnto.bedwars.api.arena.generator.Generator;
 import me.tomqnto.bedwars.api.arena.generator.GeneratorType;
 import me.tomqnto.bedwars.api.arena.team.Team;
+import me.tomqnto.bedwars.api.region.Cuboid;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class DiamondGenerator implements Generator {
+public class ItemGenerator implements Generator {
 
-    private final GeneratorType type = GeneratorType.DIAMOND;
+    private final Location location;
+    private final GeneratorType type;
+    private final Arena arena;
+    private final Team team;
+
     private ItemStack item = new ItemStack(Material.DIAMOND);
 
-    private final Arena arena;
-
-    public DiamondGenerator(Arena arena) {
+    public ItemGenerator(Location location, GeneratorType type, Arena arena, @Nullable Team team) {
+        this.location = location;
+        this.type = type;
         this.arena = arena;
+        this.team = team;
+
+        Cuboid c = new Cuboid(location, 3, true);
+        c.setMaxY(c.getMaxY() + 5);
+        c.setMinY(c.getMaxY() - 2);
+        arena.getRegions().add(c);
     }
 
     @Override
@@ -61,7 +73,7 @@ public class DiamondGenerator implements Generator {
 
     @Override
     public Location getLocation() {
-        return null;
+        return location.clone();
     }
 
     @Override
@@ -85,8 +97,8 @@ public class DiamondGenerator implements Generator {
     }
 
     @Override
-    public Team getTeam() {
-        return null;
+    @Nullable public Team getTeam() {
+        return team;
     }
 
     @Override

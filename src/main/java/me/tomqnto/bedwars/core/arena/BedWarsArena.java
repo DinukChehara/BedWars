@@ -1,25 +1,27 @@
 package me.tomqnto.bedwars.core.arena;
 
+import me.tomqnto.bedwars.api.arena.Arena;
 import me.tomqnto.bedwars.api.arena.GameState;
 import me.tomqnto.bedwars.api.arena.team.Team;
 import me.tomqnto.bedwars.api.arena.team.TeamAssigner;
+import me.tomqnto.bedwars.api.region.Region;
 import me.tomqnto.bedwars.core.arena.team.teamAssigners.BalancedTeamAssigner;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class BedWarsArena implements me.tomqnto.bedwars.api.arena.Arena {
+public class BedWarsArena implements Arena {
 
-    private final String id;
     private final Set<UUID> players = new HashSet<>();
     private final Set<UUID> spectators = new HashSet<>();
     private final Set<UUID> respawning = new HashSet<>();
     private final Set<Team> teams = new HashSet<>();
     private final Map<UUID, Team> playerTeamMap = new HashMap<>();
-
     private final TeamAssigner assigner = new BalancedTeamAssigner();
+    private final List<Region> regions = new ArrayList<>();
 
+    private final String id;
     private final int maxPlayers;
     private final int maxInTeam;
 
@@ -111,5 +113,10 @@ public class BedWarsArena implements me.tomqnto.bedwars.api.arena.Arena {
     @Override
     public int getMaxInTeam() {
         return maxInTeam;
+    }
+
+    @Override
+    public List<Region> getRegions() {
+        return regions;
     }
 }

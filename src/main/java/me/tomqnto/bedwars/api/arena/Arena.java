@@ -1,9 +1,11 @@
 package me.tomqnto.bedwars.api.arena;
 
 import me.tomqnto.bedwars.api.arena.team.Team;
+import me.tomqnto.bedwars.api.region.Region;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -88,4 +90,9 @@ public interface Arena {
      * Get maximum players allowed in a team
      */
     int getMaxInTeam();
+
+    /**
+     * @return The list of regions in this arena
+     */
+    List<Region> getRegions();
 }
