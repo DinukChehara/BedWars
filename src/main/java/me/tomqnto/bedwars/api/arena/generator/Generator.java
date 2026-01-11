@@ -28,13 +28,6 @@ public interface Generator {
     boolean spawn();
 
     /**
-     * Sets the item that this generator will spawn.
-     *
-     * @param item the item to be generated.
-     */
-    void setItem(ItemStack item);
-
-    /**
      * Get the arena assigned to this generator.
      */
     Arena getArena();
@@ -47,7 +40,7 @@ public interface Generator {
     /**
      * Change item spawn interval, in ticks.
      */
-    void setInterval(long delayTicks);
+    void setInterval(long intervalTicks);
 
     /**
      * Sets the number of items spawned at once.
@@ -58,11 +51,6 @@ public interface Generator {
      * Get the location of the generator
      */
     Location getLocation();
-
-    /**
-     * Get the item of the generator
-     */
-    ItemStack getItem();
 
     /**
      * Sets the maximum number of items the generator can hold before it stops spawning.
@@ -95,5 +83,27 @@ public interface Generator {
      * Spawns the generator holograms.
      */
     void spawnHolograms();
+
+    /**
+     * @return The item spawn interval
+     */
+    long getSpawnInterval();
+
+    /**
+     * @return The tier of the generator
+     */
+    int getTier();
+
+    /**
+     * @return How many items spawn at once
+     */
+    int getAmount();
+
+    /**
+     * Upgrades the generator to the next tier
+     *
+     * @return false if the generator cannot be upgraded
+     */
+    boolean upgrade();
 
 }

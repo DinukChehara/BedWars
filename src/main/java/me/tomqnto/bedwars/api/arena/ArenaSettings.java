@@ -14,12 +14,4 @@ public interface ArenaSettings {
      */
     int getMaxPlayersPerTeam();
 
-    /**
-     * Returns the spawn interval for the given generator type.
-     *
-     * @param generatorType the type of generator (only DIAMOND and EMERALD generators)
-     * @return the generator spawn interval in ticks
-     * @throws IllegalArgumentException if the generator type is not supported
-     */
-    long getGlobalGeneratorIntervalTicks(GeneratorType generatorType);
 }

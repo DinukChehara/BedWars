@@ -16,16 +16,19 @@ public class ItemGenerator implements Generator {
     private final GeneratorType type;
     private final Arena arena;
     private final Team team;
+    private long interval;
 
-    private ItemStack item = new ItemStack(Material.DIAMOND);
+    private int tier = 1;
+    private int amount = 1;
 
-    public ItemGenerator(Location location, GeneratorType type, Arena arena, @Nullable Team team) {
+
+    public ItemGenerator(Location location, GeneratorType type, Arena arena, @Nullable Team team, int radius) {
         this.location = location;
         this.type = type;
         this.arena = arena;
         this.team = team;
 
-        Cuboid c = new Cuboid(location, 3, true);
+        Cuboid c = new Cuboid(location, radius, true);
         c.setMaxY(c.getMaxY() + 5);
         c.setMinY(c.getMaxY() - 2);
         arena.getRegions().add(c);
@@ -47,11 +50,6 @@ public class ItemGenerator implements Generator {
     }
 
     @Override
-    public void setItem(ItemStack item) {
-        this.item = item;
-    }
-
-    @Override
     public Arena getArena() {
         return arena;
     }
@@ -62,23 +60,18 @@ public class ItemGenerator implements Generator {
     }
 
     @Override
-    public void setInterval(long delayTicks) {
-
+    public void setInterval(long intervalTicks) {
+        this.interval = intervalTicks;
     }
 
     @Override
     public void setAmount(int amount) {
-        this.item.setAmount(amount);
+        this.amount = amount;
     }
 
     @Override
     public Location getLocation() {
         return location.clone();
-    }
-
-    @Override
-    public ItemStack getItem() {
-        return item.clone();
     }
 
     @Override
@@ -104,5 +97,27 @@ public class ItemGenerator implements Generator {
     @Override
     public void spawnHolograms() {
 
+    }
+
+    @Override
+    public long getSpawnInterval() {
+        return interval;
+    }
+
+    @Override
+    public int getTier() {
+        return tier;
+    }
+
+    @Override
+    public int getAmount() {
+        return amount;
+    }
+
+    @Override
+    public boolean upgrade() {
+        if (tier < 5)
+            tier++;
+        return tier < 5;
     }
 }
