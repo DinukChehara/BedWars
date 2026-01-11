@@ -1,10 +1,10 @@
 package me.tomqnto.bedwars.api.arena.generator;
 
-public interface IGenHologram {
+public interface GeneratorHologram {
 
     /**
      * Get the generator this hologram is assigned to
      */
-    IGenerator getGenerator();
+    Generator getGenerator();
 
 }

@@ -1,26 +1,25 @@
 package me.tomqnto.bedwars.core.arena.team;
 
-import me.tomqnto.bedwars.api.arena.team.IBed;
-import me.tomqnto.bedwars.api.arena.team.ITeam;
+import me.tomqnto.bedwars.api.arena.team.Bed;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class Team implements ITeam {
+public class Team implements me.tomqnto.bedwars.api.arena.team.Team {
 
-    private final IBed bed;
+    private final Bed bed;
     private final int maxPlayers;
     private final Set<UUID> players = new HashSet<>();
 
-    public Team(IBed bed, int maxPlayers) {
+    public Team(Bed bed, int maxPlayers) {
         this.bed = bed;
         this.maxPlayers = maxPlayers;
     }
 
     @Override
-    public IBed getBed() {
+    public Bed getBed() {
         return bed;
     }
 
@@ -46,5 +45,10 @@ public class Team implements ITeam {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean canJoin() {
+        return getPlayerCount() < getMaxPlayers();
     }
 }

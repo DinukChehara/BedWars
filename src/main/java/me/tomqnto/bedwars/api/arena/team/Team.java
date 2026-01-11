@@ -3,12 +3,12 @@ package me.tomqnto.bedwars.api.arena.team;
 import java.util.Set;
 import java.util.UUID;
 
-public interface ITeam {
+public interface Team {
 
     /**
      * @return The bed of the team
      */
-    IBed getBed();
+    Bed getBed();
 
     /**
      * @return The number of players in this team
@@ -31,4 +31,9 @@ public interface ITeam {
      * @return true if player can be added, else false
      */
     boolean addPlayer(UUID player);
+
+    /**
+     * Check if players can join this team
+     */
+    boolean canJoin();
 }

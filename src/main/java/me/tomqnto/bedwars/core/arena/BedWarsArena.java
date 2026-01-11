@@ -1,26 +1,32 @@
 package me.tomqnto.bedwars.core.arena;
 
-import com.google.common.collect.ImmutableList;
 import me.tomqnto.bedwars.api.arena.GameState;
-import me.tomqnto.bedwars.api.arena.IArena;
-import me.tomqnto.bedwars.api.arena.team.ITeam;
+import me.tomqnto.bedwars.api.arena.team.Team;
+import me.tomqnto.bedwars.api.arena.team.TeamAssigner;
+import me.tomqnto.bedwars.core.arena.team.teamAssigners.BalancedTeamAssigner;
 import org.bukkit.World;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class Arena implements IArena {
+public class BedWarsArena implements me.tomqnto.bedwars.api.arena.Arena {
 
     private final String id;
     private final Set<UUID> players = new HashSet<>();
     private final Set<UUID> spectators = new HashSet<>();
     private final Set<UUID> respawning = new HashSet<>();
-    private final Set<ITeam> teams = new HashSet<>();
-    private final Map<UUID, ITeam> playerTeamMap = new HashMap<>();
+    private final Set<Team> teams = new HashSet<>();
+    private final Map<UUID, Team> playerTeamMap = new HashMap<>();
 
-    public Arena(String id) {
+    private final TeamAssigner assigner = new BalancedTeamAssigner();
+
+    private final int maxPlayers;
+    private final int maxInTeam;
+
+    public BedWarsArena(String id, int maxPlayers, int maxInTeam) {
         this.id = id;
+        this.maxPlayers = maxPlayers;
+        this.maxInTeam = maxInTeam;
     }
 
     @Override
@@ -89,10 +95,21 @@ public class Arena implements IArena {
     @Override
     public void join(UUID player) {
         players.add(player);
-        for (ITeam team : teams) {
-            if (team.getPlayerCount()<team.getMaxPlayers())
-                team.addPlayer(player);
-            return;
-        }
+        assigner.assign(player, teams);
+    }
+
+    @Override
+    public Set<Team> getTeams() {
+        return Collections.unmodifiableSet(teams);
+    }
+
+    @Override
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    @Override
+    public int getMaxInTeam() {
+        return maxInTeam;
     }
 }

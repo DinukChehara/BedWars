@@ -1,14 +1,13 @@
 package me.tomqnto.bedwars.api.arena;
 
+import me.tomqnto.bedwars.api.arena.team.Team;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public interface IArena {
+public interface Arena {
 
     /**
      * Check if the given player is spectating on this arena
@@ -74,4 +73,19 @@ public interface IArena {
      * Joins the specified player to the game
      */
     void join(UUID player);
+
+    /**
+     * @return The set of teams in this game
+     */
+    Set<Team> getTeams();
+
+    /**
+     * Get maximum allowed players amount
+     */
+    int getMaxPlayers();
+
+    /**
+     * Get maximum players allowed in a team
+     */
+    int getMaxInTeam();
 }

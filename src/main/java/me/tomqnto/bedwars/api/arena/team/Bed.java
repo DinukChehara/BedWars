@@ -4,7 +4,7 @@ import org.bukkit.Location;
 
 import java.util.List;
 
-public interface IBed {
+public interface Bed {
 
     /**
      * @return true if the bed is not broken
