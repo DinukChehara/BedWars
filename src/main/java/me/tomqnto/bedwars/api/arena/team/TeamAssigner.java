@@ -11,5 +11,5 @@ public interface TeamAssigner {
      * @param teams The list of teams in the game
      * @return The team the player is assigned to
      */
-    Team assign(UUID player, Collection<Team> teams);
+    ITeam assign(UUID player, Collection<ITeam> teams);
 }

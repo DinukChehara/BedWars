@@ -1,6 +1,6 @@
 package me.tomqnto.bedwars.api.arena;
 
-import me.tomqnto.bedwars.api.arena.team.Team;
+import me.tomqnto.bedwars.api.arena.team.ITeam;
 import me.tomqnto.bedwars.api.region.Region;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public interface Arena {
+public interface IArena {
 
     /**
      * Check if the given player is spectating on this arena
@@ -79,7 +79,7 @@ public interface Arena {
     /**
      * @return The set of teams in this game
      */
-    Set<Team> getTeams();
+    Set<ITeam> getTeams();
 
     /**
      * Get maximum allowed players amount
@@ -89,10 +89,15 @@ public interface Arena {
     /**
      * Get maximum players allowed in a team
      */
-    int getMaxInTeam();
+    int getPlayersPerTeam();
 
     /**
      * @return The list of regions in this arena
      */
     List<Region> getRegions();
+
+    /**
+     * Create teams for the game
+     */
+    void createTeams();
 }

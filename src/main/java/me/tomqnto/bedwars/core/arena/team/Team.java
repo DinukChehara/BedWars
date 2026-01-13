@@ -1,21 +1,33 @@
 package me.tomqnto.bedwars.core.arena.team;
 
 import me.tomqnto.bedwars.api.arena.team.Bed;
+import me.tomqnto.bedwars.api.arena.team.ITeam;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class Team implements me.tomqnto.bedwars.api.arena.team.Team {
+public class Team implements ITeam {
 
-    private final Bed bed;
+    private final String name;
+    private Bed bed;
     private final int maxPlayers;
     private final Set<UUID> players = new HashSet<>();
 
-    public Team(Bed bed, int maxPlayers) {
-        this.bed = bed;
+    public Team(String name, int maxPlayers) {
+        this.name = name;
         this.maxPlayers = maxPlayers;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setBed(Bed bed) {
+        this.bed = bed;
     }
 
     @Override

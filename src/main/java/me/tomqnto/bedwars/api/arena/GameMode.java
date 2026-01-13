@@ -1,19 +1,19 @@
 package me.tomqnto.bedwars.api.arena;
 
+import lombok.Getter;
+
+@Getter
 public enum GameMode {
-    SOLOS(1), DUOS(2), TRIOS(3), QUADS(4), CUSTOM(-1);
+    SOLOS(1, 8),
+    DUOS(2, 8),
+    TRIOS(3, 4),
+    QUADS(4, 4);
 
     private final int playersPerTeam;
+    private final int teamCount;
 
-    GameMode(int playersPerTeam) {
+    GameMode(int playersPerTeam, int teamCount) {
         this.playersPerTeam = playersPerTeam;
-    }
-
-    public int getPlayersPerTeam() {
-        return playersPerTeam;
-    }
-
-    public boolean isCustom() {
-        return this == CUSTOM;
+        this.teamCount = teamCount;
     }
 }

@@ -3,7 +3,17 @@ package me.tomqnto.bedwars.api.arena.team;
 import java.util.Set;
 import java.util.UUID;
 
-public interface Team {
+public interface ITeam {
+
+    /**
+     *
+     */
+    String getName();
+
+    /**
+     * Set the bed of the team
+     */
+    void setBed(Bed bed);
 
     /**
      * @return The bed of the team

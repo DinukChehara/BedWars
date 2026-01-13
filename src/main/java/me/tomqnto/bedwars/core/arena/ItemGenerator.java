@@ -1,32 +1,32 @@
 package me.tomqnto.bedwars.core.arena;
 
 import com.sun.istack.internal.Nullable;
-import me.tomqnto.bedwars.api.arena.Arena;
+import me.tomqnto.bedwars.api.arena.IArena;
 import me.tomqnto.bedwars.api.arena.generator.Generator;
 import me.tomqnto.bedwars.api.arena.generator.GeneratorType;
-import me.tomqnto.bedwars.api.arena.team.Team;
+import me.tomqnto.bedwars.api.arena.team.ITeam;
 import me.tomqnto.bedwars.api.region.Cuboid;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemGenerator implements Generator {
 
     private final Location location;
     private final GeneratorType type;
-    private final Arena arena;
-    private final Team team;
+    private final IArena arena;
+    private final ITeam team;
     private long interval;
+    private ItemStack item;
 
     private int tier = 1;
     private int amount = 1;
 
-
-    public ItemGenerator(Location location, GeneratorType type, Arena arena, @Nullable Team team, int radius) {
+    public ItemGenerator(Location location, GeneratorType type, IArena arena, @Nullable ITeam team, int radius, ItemStack item) {
         this.location = location;
         this.type = type;
         this.arena = arena;
         this.team = team;
+        this.item = item;
 
         Cuboid c = new Cuboid(location, radius, true);
         c.setMaxY(c.getMaxY() + 5);
@@ -50,7 +50,7 @@ public class ItemGenerator implements Generator {
     }
 
     @Override
-    public Arena getArena() {
+    public IArena getArena() {
         return arena;
     }
 
@@ -90,7 +90,7 @@ public class ItemGenerator implements Generator {
     }
 
     @Override
-    @Nullable public Team getTeam() {
+    @Nullable public ITeam getTeam() {
         return team;
     }
 
@@ -119,5 +119,15 @@ public class ItemGenerator implements Generator {
         if (tier < 5)
             tier++;
         return tier < 5;
+    }
+
+    @Override
+    public ItemStack getItem() {
+        return item;
+    }
+
+    @Override
+    public void setItem(ItemStack item) {
+        this.item = item;
     }
 }
