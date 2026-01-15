@@ -1,4 +1,4 @@
-package me.tomqnto.bedwars.api.arena;
+package me.tomqnto.bedwars.api.game;
 
 public interface Settings {
 

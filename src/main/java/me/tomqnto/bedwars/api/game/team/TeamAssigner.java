@@ -1,4 +1,4 @@
-package me.tomqnto.bedwars.api.arena.team;
+package me.tomqnto.bedwars.api.game.team;
 
 import java.util.Collection;
 import java.util.UUID;

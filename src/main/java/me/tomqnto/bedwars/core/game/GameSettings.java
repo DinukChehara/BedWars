@@ -1,17 +1,17 @@
-package me.tomqnto.bedwars.core.arena;
+package me.tomqnto.bedwars.core.game;
 
 import lombok.Getter;
-import me.tomqnto.bedwars.api.arena.GameMode;
+import me.tomqnto.bedwars.api.game.GameMode;
 
 @Getter
-public class ArenaSettings {
+public class GameSettings {
 
     private final GameMode mode;
     private final int playersPerTeam;
     private final int teamCount;
     private final int maxPlayers;
 
-    public ArenaSettings(GameMode mode, int playersPerTeam, int teamCount) {
+    public GameSettings(GameMode mode, int playersPerTeam, int teamCount) {
         this.mode = mode;
         this.playersPerTeam = playersPerTeam;
         this.teamCount = teamCount;

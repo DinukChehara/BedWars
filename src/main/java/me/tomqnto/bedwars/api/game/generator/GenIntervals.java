@@ -1,4 +1,4 @@
-package me.tomqnto.bedwars.api.arena.generator;
+package me.tomqnto.bedwars.api.game.generator;
 
 import lombok.Getter;
 

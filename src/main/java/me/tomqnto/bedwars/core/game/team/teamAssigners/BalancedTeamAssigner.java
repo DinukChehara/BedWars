@@ -1,7 +1,7 @@
-package me.tomqnto.bedwars.core.arena.team.teamAssigners;
+package me.tomqnto.bedwars.core.game.team.teamAssigners;
 
-import me.tomqnto.bedwars.api.arena.team.ITeam;
-import me.tomqnto.bedwars.api.arena.team.TeamAssigner;
+import me.tomqnto.bedwars.api.game.team.ITeam;
+import me.tomqnto.bedwars.api.game.team.TeamAssigner;
 
 import java.util.Collection;
 import java.util.UUID;

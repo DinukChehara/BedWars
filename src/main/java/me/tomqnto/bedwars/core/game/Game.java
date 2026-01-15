@@ -1,19 +1,23 @@
-package me.tomqnto.bedwars.core.arena;
+package me.tomqnto.bedwars.core.game;
 
-import me.tomqnto.bedwars.api.arena.Settings;
-import me.tomqnto.bedwars.api.arena.IArena;
-import me.tomqnto.bedwars.api.arena.GameState;
-import me.tomqnto.bedwars.api.arena.team.ITeam;
-import me.tomqnto.bedwars.api.arena.team.TeamAssigner;
+import lombok.Getter;
+import me.tomqnto.bedwars.api.game.Settings;
+import me.tomqnto.bedwars.api.game.IGame;
+import me.tomqnto.bedwars.api.game.GameState;
+import me.tomqnto.bedwars.api.game.generator.Generator;
+import me.tomqnto.bedwars.api.game.team.ITeam;
+import me.tomqnto.bedwars.api.game.team.TeamAssigner;
 import me.tomqnto.bedwars.api.region.Region;
-import me.tomqnto.bedwars.core.arena.team.Team;
-import me.tomqnto.bedwars.core.arena.team.teamAssigners.BalancedTeamAssigner;
+import me.tomqnto.bedwars.core.game.team.Team;
+import me.tomqnto.bedwars.core.game.team.teamAssigners.BalancedTeamAssigner;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.*;
 
-public class Arena implements IArena {
+public class Game implements IGame {
 
     private final Set<UUID> players = new HashSet<>();
     private final Set<UUID> spectators = new HashSet<>();
@@ -24,15 +28,23 @@ public class Arena implements IArena {
     private final List<Region> regions = new ArrayList<>();
     private World world = null;
     private GameState state = GameState.PRE_INIT;
+    private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+    @Getter
+    private final List<Generator> generators = new ArrayList<>();
 
     private final String id;
     private final int maxPlayers;
     private final int maxPlayersPerTeam;
 
-    public Arena(String id, Settings settings) {
+    @Getter
+    private final GameCycle gameCycle;
+
+    public Game(String id, Settings settings) {
         this.id = id;
         this.maxPlayers = settings.getMaxPlayers();
         this.maxPlayersPerTeam = settings.getMaxPlayersPerTeam();
+
+        gameCycle = new GameCycle(this);
     }
 
     @Override
@@ -134,10 +146,21 @@ public class Arena implements IArena {
 
     @Override
     public void createTeams() {
-        List<String> colors = Arrays.asList("red", "blue", "green", "yellow", "aqua", "white", "pink", "gray");
+        Map<String, Character> colors = new HashMap<>();
 
-        for (String color : colors)
-            teams.add(new Team(color,  maxPlayersPerTeam));
+        colors.put("red", 'c');
+        colors.put("blue", '9');
+        colors.put("green", 'a');
+        colors.put("yellow", 'e');
+        colors.put("aqua", 'b');
+        colors.put("white", 'f');
+        colors.put("pink", 'd');
+        colors.put("gray", '8');
 
+        for (String color : colors.keySet()) {
+            org.bukkit.scoreboard.Team bukkitTeam = scoreboard.registerNewTeam(color);
+            bukkitTeam.setPrefix("§" + colors.get(color));
+            teams.add(new Team(color, maxPlayersPerTeam, bukkitTeam));
+        }
     }
 }

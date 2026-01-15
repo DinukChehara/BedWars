@@ -1,45 +1,41 @@
 package me.tomqnto.managers;
 
-import lombok.Getter;
-import me.tomqnto.bedwars.BedWars;
-import me.tomqnto.bedwars.api.arena.IArena;
-import me.tomqnto.bedwars.api.arena.Settings;
-import me.tomqnto.bedwars.core.arena.Arena;
-import me.tomqnto.bedwars.core.arena.ArenaSettings;
-import org.yaml.snakeyaml.nodes.CollectionNode;
+import me.tomqnto.bedwars.api.game.IGame;
+import me.tomqnto.bedwars.api.game.Settings;
+import me.tomqnto.bedwars.core.game.Game;
 
 import java.util.*;
 
 public class ArenaManager {
 
-    private final Map<String, IArena> arenas = new HashMap<>();
+    private final Map<String, IGame> games = new HashMap<>();
 
-    public IArena createArena(String id, Settings settings) {
-        if (arenas.containsKey(id))
+    public IGame createGame(String id, Settings settings) {
+        if (games.containsKey(id))
             throw new IllegalStateException("Arena already exists: " + id);
 
-        IArena arena = new Arena(id, settings);
-        arenas.put(id, arena);
-        return arena;
+        IGame game = new Game(id, settings);
+        games.put(id, game);
+        return game;
     }
 
-    public IArena createArena(Settings settings) {
-        return createArena(generateArenaId(), settings);
+    public IGame createGame(Settings settings) {
+        return createGame(generateGameId(), settings);
     }
 
-    public Optional<IArena> getArena(String id) {
-        return Optional.ofNullable(arenas.get(id));
+    public Optional<IGame> getGame(String id) {
+        return Optional.ofNullable(games.get(id));
     }
 
-    public Map<String, IArena> getArenasMap() {
-        return Collections.unmodifiableMap(arenas);
+    public Map<String, IGame> getIdGameMap() {
+        return Collections.unmodifiableMap(games);
     }
 
-    public Collection<IArena> getArenas() {
-        return Collections.unmodifiableCollection(arenas.values());
+    public Collection<IGame> getGames() {
+        return Collections.unmodifiableCollection(games.values());
     }
 
-    private String generateArenaId() {
+    private String generateGameId() {
         return "bw" + UUID.randomUUID().toString().substring(0, 8);
     }
 

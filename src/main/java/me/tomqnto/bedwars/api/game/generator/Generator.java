@@ -1,8 +1,8 @@
-package me.tomqnto.bedwars.api.arena.generator;
+package me.tomqnto.bedwars.api.game.generator;
 
 import com.sun.istack.internal.Nullable;
-import me.tomqnto.bedwars.api.arena.IArena;
-import me.tomqnto.bedwars.api.arena.team.ITeam;
+import me.tomqnto.bedwars.api.game.IGame;
+import me.tomqnto.bedwars.api.game.team.ITeam;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,7 +30,7 @@ public interface Generator {
     /**
      * Get the arena assigned to this generator.
      */
-    IArena getArena();
+    IGame getArena();
 
     /**
      *  This method is called every tick to rotate the floating block
@@ -115,5 +115,10 @@ public interface Generator {
      * Set the spawning item
      */
     void setItem(ItemStack item);
+
+    /**
+     * Updates the generator(the timer, etc) every tick
+     */
+    void tick();
 
 }

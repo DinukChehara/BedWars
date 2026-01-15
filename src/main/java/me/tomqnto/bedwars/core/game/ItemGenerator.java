@@ -1,10 +1,10 @@
-package me.tomqnto.bedwars.core.arena;
+package me.tomqnto.bedwars.core.game;
 
 import com.sun.istack.internal.Nullable;
-import me.tomqnto.bedwars.api.arena.IArena;
-import me.tomqnto.bedwars.api.arena.generator.Generator;
-import me.tomqnto.bedwars.api.arena.generator.GeneratorType;
-import me.tomqnto.bedwars.api.arena.team.ITeam;
+import me.tomqnto.bedwars.api.game.IGame;
+import me.tomqnto.bedwars.api.game.generator.Generator;
+import me.tomqnto.bedwars.api.game.generator.GeneratorType;
+import me.tomqnto.bedwars.api.game.team.ITeam;
 import me.tomqnto.bedwars.api.region.Cuboid;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -13,15 +13,16 @@ public class ItemGenerator implements Generator {
 
     private final Location location;
     private final GeneratorType type;
-    private final IArena arena;
+    private final IGame arena;
     private final ITeam team;
     private long interval;
     private ItemStack item;
+    private int timer;
 
     private int tier = 1;
     private int amount = 1;
 
-    public ItemGenerator(Location location, GeneratorType type, IArena arena, @Nullable ITeam team, int radius, ItemStack item) {
+    public ItemGenerator(Location location, GeneratorType type, IGame arena, @Nullable ITeam team, int radius, ItemStack item) {
         this.location = location;
         this.type = type;
         this.arena = arena;
@@ -32,6 +33,9 @@ public class ItemGenerator implements Generator {
         c.setMaxY(c.getMaxY() + 5);
         c.setMinY(c.getMaxY() - 2);
         arena.getRegions().add(c);
+
+
+        tick();
     }
 
     @Override
@@ -50,7 +54,7 @@ public class ItemGenerator implements Generator {
     }
 
     @Override
-    public IArena getArena() {
+    public IGame getArena() {
         return arena;
     }
 
@@ -129,5 +133,12 @@ public class ItemGenerator implements Generator {
     @Override
     public void setItem(ItemStack item) {
         this.item = item;
+    }
+
+    @Override
+    public void tick() {
+        updateHologram();
+        if (timer == 0)
+            timer = (int) (interval/20);
     }
 }

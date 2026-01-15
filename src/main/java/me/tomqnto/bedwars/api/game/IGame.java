@@ -1,6 +1,6 @@
-package me.tomqnto.bedwars.api.arena;
+package me.tomqnto.bedwars.api.game;
 
-import me.tomqnto.bedwars.api.arena.team.ITeam;
+import me.tomqnto.bedwars.api.game.team.ITeam;
 import me.tomqnto.bedwars.api.region.Region;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -9,20 +9,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public interface IArena {
+public interface IGame {
 
     /**
-     * Check if the given player is spectating on this arena
+     * Check if the given player is spectating on this game
      */
     boolean isSpectator(Player player);
 
     /**
-     * Check if the given player is spectating on this arena
+     * Check if the given player is spectating on this game
      */
     boolean isSpectator(UUID player);
 
     /**
-     * Check if the given player is respawning on this arena
+     * Check if the given player is respawning on this game
      */
     boolean isRespawning(UUID player);
 
@@ -32,12 +32,12 @@ public interface IArena {
     boolean isGamePlayer(UUID player);
 
     /**
-     *@return A list of all players currently spectating this arena
+     *@return A list of all players currently spectating this game
      */
     Set<UUID> getSpectators();
 
     /**
-     * Get arena state
+     * Get game state
      */
     GameState getState();
 
@@ -47,12 +47,12 @@ public interface IArena {
     void setState(GameState newState);
 
     /**
-     * Get the arena world
+     * Get the game world
      */
     World getWorld();
 
     /**
-     * Get arena id
+     * Get game id
      */
     String getId();
 
@@ -67,12 +67,12 @@ public interface IArena {
     Set<UUID> getRespawning();
 
     /**
-     * Initialize the arena after loading the world
+     * Initialize the game after loading the world
      */
     void init(World world);
 
     /**
-     * Ran when a player dies in this arena
+     * Ran when a player dies in this game
      */
     void onDeath(UUID player);
 
@@ -97,7 +97,7 @@ public interface IArena {
     int getPlayersPerTeam();
 
     /**
-     * @return The list of regions in this arena
+     * @return The list of regions in this game
      */
     List<Region> getRegions();
 

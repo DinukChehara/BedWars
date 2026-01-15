@@ -1,4 +1,6 @@
-package me.tomqnto.bedwars.api.arena.team;
+package me.tomqnto.bedwars.api.game.team;
+
+import org.bukkit.scoreboard.Team;
 
 import java.util.Set;
 import java.util.UUID;
@@ -46,4 +48,8 @@ public interface ITeam {
      * Check if players can join this team
      */
     boolean canJoin();
+
+    Team getBukkitTeam();
+
+    boolean removePlayer(UUID player);
 }
