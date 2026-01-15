@@ -42,6 +42,11 @@ public interface IArena {
     GameState getState();
 
     /**
+     * Change the game state
+     */
+    void setState(GameState newState);
+
+    /**
      * Get the arena world
      */
     World getWorld();

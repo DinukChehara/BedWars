@@ -1,8 +1,6 @@
 package me.tomqnto.bedwars.api.arena;
 
-import me.tomqnto.bedwars.api.arena.generator.GeneratorType;
-
-public interface ArenaSettings {
+public interface Settings {
 
     /**
      * @return the maximum number of players allowed in the arena

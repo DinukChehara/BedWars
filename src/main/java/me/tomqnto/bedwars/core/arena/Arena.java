@@ -1,6 +1,6 @@
 package me.tomqnto.bedwars.core.arena;
 
-import me.tomqnto.bedwars.api.arena.ArenaSettings;
+import me.tomqnto.bedwars.api.arena.Settings;
 import me.tomqnto.bedwars.api.arena.IArena;
 import me.tomqnto.bedwars.api.arena.GameState;
 import me.tomqnto.bedwars.api.arena.team.ITeam;
@@ -23,12 +23,13 @@ public class Arena implements IArena {
     private final TeamAssigner assigner = new BalancedTeamAssigner();
     private final List<Region> regions = new ArrayList<>();
     private World world = null;
+    private GameState state = GameState.PRE_INIT;
 
     private final String id;
     private final int maxPlayers;
     private final int maxPlayersPerTeam;
 
-    public Arena(String id, ArenaSettings settings) {
+    public Arena(String id, Settings settings) {
         this.id = id;
         this.maxPlayers = settings.getMaxPlayers();
         this.maxPlayersPerTeam = settings.getMaxPlayersPerTeam();
@@ -69,12 +70,17 @@ public class Arena implements IArena {
 
     @Override
     public GameState getState() {
-        return null;
+        return state;
+    }
+
+    @Override
+    public void setState(GameState newState) {
+        state = newState;
     }
 
     @Override
     public World getWorld() {
-        return null;
+        return world;
     }
 
     @Override
