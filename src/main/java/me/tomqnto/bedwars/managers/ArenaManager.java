@@ -1,4 +1,4 @@
-package me.tomqnto.managers;
+package me.tomqnto.bedwars.managers;
 
 import me.tomqnto.bedwars.api.game.IGame;
 import me.tomqnto.bedwars.api.game.Settings;
