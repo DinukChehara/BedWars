@@ -3,10 +3,13 @@ package me.tomqnto.bedwars.core.game;
 import com.sun.istack.internal.Nullable;
 import me.tomqnto.bedwars.api.game.IGame;
 import me.tomqnto.bedwars.api.game.generator.Generator;
+import me.tomqnto.bedwars.api.game.generator.GeneratorTier;
 import me.tomqnto.bedwars.api.game.generator.GeneratorType;
 import me.tomqnto.bedwars.api.game.team.ITeam;
 import me.tomqnto.bedwars.api.region.Cuboid;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemGenerator implements Generator {
@@ -18,29 +21,24 @@ public class ItemGenerator implements Generator {
     private long interval;
     private ItemStack item;
     private int timer;
+    private int capacity;
 
-    private int tier = 1;
+    private GeneratorTier tier;
     private int amount = 1;
 
-    public ItemGenerator(Location location, GeneratorType type, IGame arena, @Nullable ITeam team, int radius, ItemStack item) {
+    public ItemGenerator(Location location, GeneratorType type, IGame game, @Nullable ITeam team, int radius, ItemStack item, int capacity) {
         this.location = location;
         this.type = type;
-        this.arena = arena;
+        this.arena = game;
         this.team = team;
         this.item = item;
+        this.capacity = capacity;
 
         Cuboid c = new Cuboid(location, radius, true);
-        c.setMaxY(c.getMaxY() + 5);
-        c.setMinY(c.getMaxY() - 2);
-        arena.getRegions().add(c);
+        c.setMaxY(location.getBlockY() + 5);
+        c.setMinY(location.getBlockY() - 2);
+        game.getRegions().add(c);
 
-
-        tick();
-    }
-
-    @Override
-    public boolean create(Location location) {
-        return false;
     }
 
     @Override
@@ -80,7 +78,7 @@ public class ItemGenerator implements Generator {
 
     @Override
     public void setCapacity(int value) {
-
+        capacity = value;
     }
 
     @Override
@@ -109,7 +107,7 @@ public class ItemGenerator implements Generator {
     }
 
     @Override
-    public int getTier() {
+    public GeneratorTier getTier() {
         return tier;
     }
 
@@ -120,9 +118,12 @@ public class ItemGenerator implements Generator {
 
     @Override
     public boolean upgrade() {
-        if (tier < 5)
-            tier++;
-        return tier < 5;
+        GeneratorTier nextTier = getNextTier();
+        if (nextTier==null) return false;
+
+        this.tier = nextTier;
+        applyTier();
+        return true;
     }
 
     @Override
@@ -137,8 +138,51 @@ public class ItemGenerator implements Generator {
 
     @Override
     public void tick() {
+        if (--timer > 0) {
+            return;
+        }
+
+        timer = (int) interval;
+
+        if (!canSpawn()) return;
+
         updateHologram();
-        if (timer == 0)
-            timer = (int) (interval/20);
     }
+
+    private boolean canSpawn() {
+        int nearby = countNearbyItems();
+        return nearby < capacity;
+    }
+
+    private int countNearbyItems() {
+        int count = 0;
+        for (Entity e : location.getWorld().getNearbyEntities(location, 1.5, 1.5, 1.5)) {
+            if (e instanceof Item) {
+                Item itemEntity = (Item) e;
+                if (itemEntity.getItemStack().isSimilar(item)) {
+                    count += itemEntity.getItemStack().getAmount();
+                }
+            }
+        }
+        return count;
+    }
+
+
+    private void start() {
+        timer = (int) interval;
+    }
+
+    private GeneratorTier getNextTier() {
+        if (tier == GeneratorTier.DIAMOND_I) return GeneratorTier.DIAMOND_II;
+        if (tier == GeneratorTier.DIAMOND_II) return GeneratorTier.DIAMOND_III;
+        if (tier == GeneratorTier.EMERALD_I) return GeneratorTier.EMERALD_II;
+        if (tier == GeneratorTier.EMERALD_II) return GeneratorTier.EMERALD_III;
+        return null;
+    }
+
+    private void applyTier() {
+        setInterval(tier.getInterval());
+        setCapacity(tier.getCapacity());
+    }
+
 }

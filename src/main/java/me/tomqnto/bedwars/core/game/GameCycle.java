@@ -21,14 +21,13 @@ public class GameCycle implements Cycle {
     private int ticks = 0;
 
     private void runCycle() {
-        if (game.getState().equals(GameState.PRE_INIT)) {
+        if (game.getState().equals(GameState.ENDED)) {
             endCycle();
             return;
         }
 
-        if (ticks == 0) {
+        if (game.getState() == GameState.CREATED) {
             game.setState(GameState.WAITING);
-            prepareLobby();
         }
 
         for (Generator gen : game.getGenerators())
@@ -39,15 +38,11 @@ public class GameCycle implements Cycle {
 
     @Override
     public void startCycle() {
-        task.run();
+        task.runTaskTimer(game.getPlugin(), 0L, 0L);
     }
 
     @Override
     public void endCycle() {
         task.cancel();
-    }
-
-    private void prepareLobby() {
-
     }
 }

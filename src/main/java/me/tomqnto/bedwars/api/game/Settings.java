@@ -12,4 +12,9 @@ public interface Settings {
      */
     int getMaxPlayersPerTeam();
 
+    /**
+     * @return the number of teams
+     */
+    int getTeamCount();
+
 }

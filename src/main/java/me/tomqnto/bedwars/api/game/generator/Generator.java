@@ -9,13 +9,6 @@ import org.bukkit.inventory.ItemStack;
 public interface Generator {
 
     /**
-     * Create the generator.
-     *
-     * @param location The location where the generator should be created.
-     */
-    boolean create(Location location);
-
-    /**
      * @return generator type.
      */
     GeneratorType getType();
@@ -92,7 +85,7 @@ public interface Generator {
     /**
      * @return The tier of the generator
      */
-    int getTier();
+    GeneratorTier getTier();
 
     /**
      * @return How many items spawn at once

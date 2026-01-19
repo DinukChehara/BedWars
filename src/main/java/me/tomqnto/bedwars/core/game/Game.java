@@ -1,6 +1,7 @@
 package me.tomqnto.bedwars.core.game;
 
 import lombok.Getter;
+import me.tomqnto.bedwars.BedWars;
 import me.tomqnto.bedwars.api.game.Settings;
 import me.tomqnto.bedwars.api.game.IGame;
 import me.tomqnto.bedwars.api.game.GameState;
@@ -27,11 +28,13 @@ public class Game implements IGame {
     private final TeamAssigner assigner = new BalancedTeamAssigner();
     private final List<Region> regions = new ArrayList<>();
     private World world = null;
-    private GameState state = GameState.PRE_INIT;
+    private GameState state = GameState.CREATED;
     private final Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     @Getter
     private final List<Generator> generators = new ArrayList<>();
 
+    @Getter
+    private final BedWars plugin;
     private final String id;
     private final int maxPlayers;
     private final int maxPlayersPerTeam;
@@ -39,7 +42,8 @@ public class Game implements IGame {
     @Getter
     private final GameCycle gameCycle;
 
-    public Game(String id, Settings settings) {
+    public Game(BedWars plugin, String id, Settings settings) {
+        this.plugin = plugin;
         this.id = id;
         this.maxPlayers = settings.getMaxPlayers();
         this.maxPlayersPerTeam = settings.getMaxPlayersPerTeam();
