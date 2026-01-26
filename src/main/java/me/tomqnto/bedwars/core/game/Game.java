@@ -11,7 +11,9 @@ import me.tomqnto.bedwars.api.game.team.TeamAssigner;
 import me.tomqnto.bedwars.api.region.Region;
 import me.tomqnto.bedwars.core.game.team.Team;
 import me.tomqnto.bedwars.core.game.team.teamAssigners.BalancedTeamAssigner;
+import net.md_5.bungee.api.chat.BaseComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -24,6 +26,7 @@ public class Game implements IGame {
     private final Set<UUID> spectators = new HashSet<>();
     private final Set<UUID> respawning = new HashSet<>();
     private final Set<ITeam> teams = new HashSet<>();
+    private final Set<UUID> leftPlayers = new HashSet<>();
     private final Map<UUID, ITeam> playerTeamMap = new HashMap<>();
     private final TeamAssigner assigner = new BalancedTeamAssigner();
     private final List<Region> regions = new ArrayList<>();
@@ -33,7 +36,6 @@ public class Game implements IGame {
     @Getter
     private final List<Generator> generators = new ArrayList<>();
 
-    @Getter
     private final BedWars plugin;
     private final String id;
     private final int maxPlayers;
@@ -124,8 +126,20 @@ public class Game implements IGame {
 
     @Override
     public void join(UUID player) {
-        players.add(player);
-        assigner.assign(player, teams);
+        if (state == GameState.ACTIVE) {
+            if (isFinal(player)) {
+                Bukkit.getPlayer(player).sendMessage(ChatColor.RED + "Your bed was destroyed, you are now spectating the match");
+                // TO DO: MAKE A SPECTATOR
+            } else {
+                // TO DO: RESPAWN
+            }
+        } else if (state == GameState.ENDED) {
+            Bukkit.getPlayer(player).sendMessage(ChatColor.RED + "That game has ended");
+
+        } else if (state == GameState.WAITING) {
+            players.add(player);
+            assigner.assign(player, teams);
+        }
     }
 
     @Override
@@ -150,21 +164,32 @@ public class Game implements IGame {
 
     @Override
     public void createTeams() {
-        Map<String, Character> colors = new HashMap<>();
+        List<String> colors = Arrays.asList("RED", "BLUE", "GREEN", "YELLOW", "AQUA", "WHITE", "PINK", "GRAY");
 
-        colors.put("red", 'c');
-        colors.put("blue", '9');
-        colors.put("green", 'a');
-        colors.put("yellow", 'e');
-        colors.put("aqua", 'b');
-        colors.put("white", 'f');
-        colors.put("pink", 'd');
-        colors.put("gray", '8');
-
-        for (String color : colors.keySet()) {
+        for (String color : colors) {
             org.bukkit.scoreboard.Team bukkitTeam = scoreboard.registerNewTeam(color);
-            bukkitTeam.setPrefix("§" + colors.get(color));
+            bukkitTeam.setPrefix(String.valueOf(ChatColor.valueOf(color)));
             teams.add(new Team(color, maxPlayersPerTeam, bukkitTeam));
         }
+    }
+
+    public boolean isFinal(UUID player) {
+        if (state == GameState.ACTIVE)
+            return playerTeamMap.get(player).getBed().isAlive();
+        return false;
+    }
+
+    @Override
+    public void leave(UUID player) {
+        if (state == GameState.ACTIVE) {
+            onDeath(player);
+            if (!isFinal(player))
+                leftPlayers.add(player);
+        } else {
+            if (playerTeamMap.containsKey(player))
+                playerTeamMap.get(player).removePlayer(player);
+        }
+
+        // send to lobby
     }
 }

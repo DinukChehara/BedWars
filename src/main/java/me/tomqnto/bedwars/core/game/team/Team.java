@@ -2,12 +2,10 @@ package me.tomqnto.bedwars.core.game.team;
 
 import me.tomqnto.bedwars.api.game.team.Bed;
 import me.tomqnto.bedwars.api.game.team.ITeam;
+import me.tomqnto.bedwars.core.game.ItemGenerator;
 import org.bukkit.Bukkit;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class Team implements ITeam {
 
@@ -15,6 +13,7 @@ public class Team implements ITeam {
     private Bed bed;
     private final int maxPlayers;
     private final Set<UUID> players = new HashSet<>();
+    private final List<ItemGenerator> generators = new ArrayList<>();
     private final org.bukkit.scoreboard.Team bukkitTeam;
 
     public Team(String name, int maxPlayers, org.bukkit.scoreboard.Team team) {
@@ -82,6 +81,11 @@ public class Team implements ITeam {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<ItemGenerator> getGenerators() {
+        return generators;
     }
 
 }

@@ -1,4 +1,4 @@
-package me.tomqnto.bedwars.managers;
+package me.tomqnto.bedwars.core.managers;
 
 import me.tomqnto.bedwars.BedWars;
 import me.tomqnto.bedwars.api.game.IGame;
@@ -7,13 +7,13 @@ import me.tomqnto.bedwars.core.game.Game;
 
 import java.util.*;
 
-public class ArenaManager {
+public class GameManager {
 
     private final BedWars plugin;
 
     private final Map<String, IGame> games = new HashMap<>();
 
-    public ArenaManager(BedWars plugin) {
+    public GameManager(BedWars plugin) {
         this.plugin = plugin;
     }
 

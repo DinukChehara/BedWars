@@ -1,7 +1,9 @@
 package me.tomqnto.bedwars.api.game.team;
 
+import me.tomqnto.bedwars.core.game.ItemGenerator;
 import org.bukkit.scoreboard.Team;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -52,4 +54,6 @@ public interface ITeam {
     Team getBukkitTeam();
 
     boolean removePlayer(UUID player);
+
+    List<ItemGenerator> getGenerators();
 }

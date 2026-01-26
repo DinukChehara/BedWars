@@ -105,4 +105,6 @@ public interface IGame {
      * Create teams for the game
      */
     void createTeams();
+
+    void leave(UUID player);
 }

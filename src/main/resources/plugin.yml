@@ -1,0 +1,4 @@
+name: BedWars
+version: '${project.version}'
+main: me.tomqnto.bedwars.BedWars
+api-version: 1.8
